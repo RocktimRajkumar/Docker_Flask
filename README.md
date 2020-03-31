@@ -1,7 +1,7 @@
 
 **You will learn how to create, run, build, push, pull, kill, prune and work in docker with flask as an api.**
 <p align='center'>
-	<img src='https://live.staticflickr.com/7336/14098888813_1047e39f08.jpg' alt='docker Image'/>
+	<img src='https://codefresh.io/wp-content/uploads/2017/06/Twitter_Flask-Docker-Tags-02.jpg' alt='docker Image'/>
 </p>
 
 # How to USE
