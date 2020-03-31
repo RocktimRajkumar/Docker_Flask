@@ -56,10 +56,96 @@ Have some currently running and want to  `kill`  them?
 You can also check to see if you have any containers even if they are not running.
 
 ## Creating the Files
+At this point I am going to assume you have python  installed.
+
+    $ python --version  
+    Python 3.6.2
+For creating Flask Application you need to install Flask.
+
+    $ pip install flask
+
+Create a new file in your `hello_docker` folder called app.py with some basic flask code in it.
+
+**app.py**
+
+    #app.py file
+    
+    from flask import Flask
+    
+	app = Flask(__name__)
+	
+    @app.route('/')
+    def index():
+	    return "Hello World API"
+	    
+    if __name__ == '__main__':
+	    app.run(host='0.0.0.0',port=8053)
+
+You will notice the python file imports a few things. Although you might have them right now locally, the next person on the next machine won’t. So we need to create a  `requirements.txt`  file to import them when our docker runs.
+
+**requirements.txt**
+
+    flask
+
+Now we need a `Dockerfile` in the same directory. It is just called `Dockerfile` , no extension, no suffix.
+
+**Docker File**
+
+    # Dockerfile
+    FROM python:3
+
+	WORKDIR /usr/src/app
+
+	COPY requirements.txt ./
+
+	RUN pip install --no-cache-dir -r requirements.txt
+
+	COPY . .
+
+	CMD ["python","./hello-api.py"]
+
+This  `Dockerfile`  copies our current folder,  `.`  , into our container folder  `./`  . It sets `/usr/src/app` folder as the working directory, installs all our requirements with  `pip install`  from  `requirements.txt`, and then runs the file using  `python app.py`.
+
+Thats it, these are the 3 files you need to get started. My  `hello_docker` folder looks like this.
+
+    hello_docker  
+    │  
+    └───requirements.txt  
+    │  
+    └───Dockerfile  
+    │  
+    └───app.py
 
 ## Docker Build
 
+You should still be in your  `hello_docker`  directory.
+
+Now we can build our docker image.
+
+    $ docker build -t my_docker:latest .
+
+You will get a bunch of fancy output with loading bars, but what are looking for it it to end with the following confirmation.
+
+    Successfully built ddc23d92067e
+    Successfully tagged my_docker_flask:latest
+    
+What does this do? We are building an image with the tag ( `--tag` , `-t` ) `my_docker:latest` that includes everything in the current directory, `.`
+
+Now we can see what we created.
+
+    $ docker images  
+    REPOSITORY       TAG     IMAGE ID      CREATED         SIZE  
+    my_docker	   latest   dec23792067e  45 seconds ago  687MB
+
+But, is it running?
+
+    $ docker ps  
+    CONTAINER ID  IMAGE  COMMAND  CREATED  STATUS  PORTS  NAMES
+
+Nope! That is the next step.
+
 ## Docker Run
+
 
 ## Push Your Image To Docker Hub
 
